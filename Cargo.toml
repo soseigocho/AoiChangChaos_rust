@@ -1,0 +1,12 @@
+[workspace]
+
+members = [
+    "read_and_write",
+    "sin_generator",
+    "kalman_filter",
+    "ensemble_kalman_filter",
+    "merging_particle_filter",
+    "lorenz96",
+    "lorenz96_generator",
+    "rmse_evaluator"
+]
