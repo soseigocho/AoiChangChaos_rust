@@ -10,6 +10,7 @@ use rand_xoshiro::Xoshiro256StarStar;
 
 use ensemble_kalman_filter::*;
 use read_and_write::*;
+use lorenz96::*;
 
 const S: u64 = 2039;
 const SYSTEM_NOISE_VARIANCE: f64 = 4.0;
@@ -39,22 +40,22 @@ fn main() {
     let x = Array::zeros((40, 300));
     let v = Array::from_elem((40, 300), 1.0f64);
     let w = Array::from_elem((40, 300), 1.0_f64);
-    let h = Array::eye(40);
+    // let h = Array::eye(40);
 
     // let first_half = Array::ones(20);
     // let last_half = Array::zeros(20);
     // let h =
     //    Array::from_diag(&concatenate(Axis(0), &[first_half.view(), last_half.view()]).unwrap());
 
-    // let mut d = Vec::with_capacity(40);
-    // for i in 0..40 {
-    //     if i%2 == 0 {
-    //         d.push(1f64);
-    //     } else {
-    //         d.push(0f64);
-    //     }
-    // }
-    // let h = Array::from_diag(&arr1(&d));
+    let mut d = Vec::with_capacity(40);
+    for i in 0..40 {
+        if i%2 == 0 {
+            d.push(1f64);
+        } else {
+            d.push(0f64);
+        }
+    }
+    let h = Array::from_diag(&arr1(&d));
 
     let traj = read_trajectory_file(input_path);
     let mut ensemble_members_variance_output_buf =
@@ -80,6 +81,14 @@ fn main() {
     enkf.run_and_write_with_ensemble_members_variance(
         &mut result_output_buf,
         &mut ensemble_members_variance_output_buf,
-        |a, b| a + b,
+        |a, b| {
+            let mut ret = Array::zeros((a.nrows(), a.ncols()));
+            for i in 0..a.ncols() {
+                let mut s = System{ x : a.column(i).to_owned() };
+                s.step();
+                ret.column_mut(i).assign(&s.x);
+            }
+            ret + b
+        },
     );
 }
