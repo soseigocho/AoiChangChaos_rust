@@ -58,7 +58,10 @@ impl EnsembleKalmanFilter {
     pub fn filter(&mut self, observation_index: usize) -> () {
         self.update_w();
         let yi = &self.observation_data[observation_index].1;
-        let y = Array::from_shape_fn((yi.len(), self.member.x.ncols()), |(i, _j)| yi[i]);
+        let mut y = Array::zeros((yi.len(), self.member.x.ncols()));
+        for ensemble_index in 0..self.member.x.ncols() {
+            y.column_mut(ensemble_index).assign(yi);
+        }
         let x_mean = self.member.x.mean_axis(Axis(1)).unwrap();
         let x_diff =
             Array::from_shape_fn((self.member.x.nrows(), self.member.x.ncols()), |(i, j)| {
