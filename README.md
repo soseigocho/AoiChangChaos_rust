@@ -18,6 +18,10 @@ sin_generator.exe output_file_path data_interval number_of_data random_seed
 ```
 で実行可能。
 
+![Noisy Sin](pictures/sin.png)
+
+sin波に平均0分散1のガウシアンノイズを付与した。
+
 ### read_and_write
 各種バイナリ・ライブラリに共通のファイル読み書きライブラリ。
 
@@ -29,6 +33,9 @@ cargo run --example sin_test input_file_path output_file_path
 ```
 にてsin_generatorで生成したデータを指定することで[part2][6]のシミュレーションを実行可能。
 
+![Sin KF](pictures/input_kf_x.png)
+
+カルマンフィルタを用いた一階トレンドモデルによるシミュレーション
 
 ### ensemble_kalman_filter
 [part3][2]、アンサンブルカルマンフィルターの実装ライブラリ。
@@ -37,11 +44,23 @@ cargo run --example sin_test input_file_path output_file_path
 ```
 にてsin_generatorで生成したデータを指定することで[part3][2]のシミュレーションを実行可能。
 
+![Sin EnKF](pictures/input_enkf_x.png)
+
+アンサンブルカルマンフィルタを用いた一階トレンドモデルによるシミュレーション
+
 また
 ```
 cargo run --example lorenz96_try_e input_file_path output_variance_path output_file_path
 ```
 にてlorenz96_generator(後述)で生成したデータを指定することで[part6][5]のシミュレーション実行可能。
+
+![Lorenz96 EnKF Skipped](pictures/true_enkf_res_skip02_rmse.png)
+
+アンサンブルカルマンフィルタを用いて時刻0.2ごとに観測したRMSE
+
+![Lorenz96 EnKF Each&First-half](pictures/true_enkf_res_skip02_each_and_first_half_rmse.png)
+
+アンサンブルカルマンフィルタを用いて偶数次元のみ観測した場合と前半20次元のみ観測した場合のRMSE。共に時刻0.2ごとに観測。
 
 ~~[part6][5]において観測されていない次元のRMSEが4前後となっているところ、本プログラムにおいては50～100と完全に同化が失敗している。~~
 
@@ -56,11 +75,23 @@ cargo run --example sin_test input_file_path output_file_path
 ```
 にてsin_generatorで生成したデータを指定することで[part4][3]のシミュレーションを実行可能
 
+![Sin MPF](pictures/input_mpf_x_6.png)
+
+融合粒子フィルタを用いた一階トレンドモデルによるシミュレーション。システムノイズは平均0分散0.36
+
 また
 ```
 cargo run --example lorenz96_try input_file_path output_variance_path output_file_path
 ```
 にてlorenz96_generator(後述)で生成したデータを指定することで[part6][5]のシミュレーションを実行可能。
+
+![Lorenz96 MPF](pictures/true_mpf_res_all_rmse.png)
+
+融合粒子フィルタを用いて全ての時刻・次元を観測したRMSE
+
+![Lorenz96 MPF Skipped](pictures/true_mpf_res_skip02_rmse.png)
+
+融合粒子フィルタを用いて時刻0.2ごとに観測したRMSE
 
 ~~[part6][5]においてRMSEが0.6前後となっているところ、本プログラムにおいては1.0前後となっており、実行結果に乖離がある。~~
 
@@ -74,11 +105,19 @@ cargo run --example naive output_file_path
 ```
 とすることで実行可能。
 
+![Lorenz96 1e-3](pictures/1e_minus3.png)
+
+全ての次元を8.0にした後0(1)次元目にのみ1e-3を加えた場合の0～2(1～3)次元目を描画。これが本実験での真の値となる。
+
 また
 ```
 cargo run --example lyapunov input_true_file_path input_diff_file_path output_file_path
 ```
 とすることで0次元(1次元)目のリアプノフ指数を評価可能。
+
+![Lyapunov 1e-3 vs. 1e-3+1e-4](pictures/lyapunov.png)
+
+全ての次元を8.0にした後0(1)次元目に1e-3を加えた場合と更に1e-4を加えた場合の0(1)次元目のリアプノフ指数の遷移
 
 ### lorenz96_generator
 [part6][5]、ローレンツにガウシアンノイズを付与するバイナリ。
@@ -86,6 +125,10 @@ cargo run --example lyapunov input_true_file_path input_diff_file_path output_fi
 lorenz96_generator.exe input_file_path output_file_path
 ```
 とすることで実行可能。
+
+![Noisy Lorenz](pictures/obs_1e_minus3.png)
+
+先に描画したグラフの結果に平均0分散1のガウシアンノイズを付与した。これが本実験での観測値となる。
 
 先述した評価値が悪い問題の原因が乱数生成器の違いにあるのではないかと予測し、動画に合わせたメルセンヌツイスタを使用したコードと当初のxoshiroを使用したコードとが存在する。
 
@@ -97,6 +140,14 @@ lorenz96_generator.exe input_file_path output_file_path
 rmse_evaluator.exe input_true_file_path input_estimated_file_path output_file_path estimated
 ```
 で実行可能。
+
+![Noisy Lorenz96 RMSE](pictures/true_obs_rmse.png)
+
+本実験における真の値と観測値とのRMSEを算出した結果
+
+![Lorenz96 Origin RMSE](pictures/true_origin_plus_1e_minus3_rmse.png)
+
+本実験における真の値と原点の0(1)次元目に1e-3を加えた場合のRMSEを算出した結果。動画中では言及されてないが原点からのみ結果だとRMSEが7弱となるため動画中で表示されているグラフは恐らくこちら。
 
 最後のコマンドライン引数は2詰めの引数(input_estimated_file_path)が実行結果の場合time=0.0が含まれているのでそれをスキップする場合にestimatedを指定する。
 

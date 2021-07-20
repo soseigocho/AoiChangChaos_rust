@@ -1,6 +1,6 @@
 set terminal png
-set output "part6/true_mpf_res_skip02_rmse.png"
-plot [][0:8] "part6/true_mpf_res_skip02_rmse.ssv" \
+set output "true_obs_rmse.png"
+plot [][0:8] "true_obs_rmse.ssv" \
         title "RMSE" \
         with linespoints \
         linetype 1\
