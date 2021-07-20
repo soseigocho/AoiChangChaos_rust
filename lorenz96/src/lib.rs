@@ -7,7 +7,7 @@ use ndarray::*;
 use read_and_write::*;
 
 pub struct System {
-    x: Array1<f64>,
+    pub x: Array1<f64>,
 }
 
 impl System {
@@ -28,7 +28,7 @@ impl System {
         }
     }
 
-    fn step(&mut self) {
+    pub fn step(&mut self) {
         self.runge_kutta_44();
     }
 

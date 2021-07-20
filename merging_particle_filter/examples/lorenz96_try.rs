@@ -9,6 +9,7 @@ use rand_xoshiro::Xoshiro256StarStar;
 
 use merging_particle_filter::*;
 use read_and_write::*;
+use lorenz96::*;
 
 const S: u64 = 2039;
 const SYSTEM_NOISE_VARIANCE: f64 = 4.0;
@@ -70,6 +71,14 @@ fn main() {
     mpf.run_and_write_with_ensemble_members_variance(
         &mut result_output_buf,
         &mut ensemble_members_variance_output_buf,
-        |a, b| a + b,
+        |a, b| {
+            let mut ret = Array::zeros((a.nrows(), a.ncols()));
+            for i in 0..a.ncols() {
+                let mut s = System{ x : a.column(i).to_owned() };
+                s.step();
+                ret.column_mut(i).assign(&s.x);
+            }
+            ret + b
+        },
     );
 }
