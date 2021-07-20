@@ -56,7 +56,7 @@ fn main() {
     let mut mpf = MergingParticleFilter {
         member: MergingParticleFilterMember { x, v, h, r },
         observation_data: traj,
-        observation_span: 0.01f64,
+        observation_span: 0.2f64,
         simulation_time_length: 100f64,
         merge_magnification: 3,
         merge_alpha: vec![

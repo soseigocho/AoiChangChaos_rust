@@ -189,7 +189,7 @@ impl MergingParticleFilter {
     {
         let mut predict_time_length: f64 = 0.0;
         // 時間スキップ幅を変える時は書き換えること 0.01-0 0.2-19
-        let mut observation_index: usize = 0;
+        let mut observation_index: usize = 19;
         for loop_index in 0..=(self.simulation_time_length / Self::ΔT) as usize {
             self.predict(f);
             if predict_time_length >= self.observation_span {
@@ -202,7 +202,7 @@ impl MergingParticleFilter {
                 }
                 self.filter(observation_index);
                 // 時間スキップ幅を変える時は書き換えること 0.01-1 0.2-20
-                observation_index += 1;
+                observation_index += 20;
             }
             predict_time_length += Self::ΔT;
             let time = loop_index as f64 * Self::ΔT;
