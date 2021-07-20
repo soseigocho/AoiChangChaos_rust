@@ -71,7 +71,7 @@ fn main() {
     let mut enkf = EnsembleKalmanFilter {
         member: EnsembleKalmanFilterMember { x, v, w, h },
         observation_data: traj,
-        observation_span: 0.2f64,
+        observation_span: 0.01f64,
         simulation_time_length: 100f64,
         rng: Xoshiro256StarStar::seed_from_u64(S),
         predict_distribution: Normal::new(0.0, SYSTEM_NOISE_VARIANCE.sqrt()).unwrap(),
