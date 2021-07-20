@@ -1,10 +1,13 @@
 # AoiChangChaos_rust
 のーふぉん(Twitter:@4th_No_Fon)さん制作の動画シリーズ「[琴葉葵の混沌解析][1]」にて紹介されたデータ同化シミュレーションをRustで実装した支援コードです。
 
-##  ◤◢◤◢◤◢◤◢ CAUTION ◤◢◤◢◤◢◤◢
-### 本リポジトリには[Part3][2]・[Part4][3]・[part5][4]・[Part6][5]の実装が含まれますが、現状シミュレーション結果が再現せず、何らかの不具合を抱えている可能性があります。
+##  ~~◤◢◤◢◤◢◤◢ CAUTION ◤◢◤◢◤◢◤◢~~
+### ~~本リポジトリには[Part3][2]・[Part4][3]・[part5][4]・[Part6][5]の実装が含まれますが、現状シミュレーション結果が再現せず、何らかの不具合を抱えている可能性があります。~~
 
-詳細は後述、もしくはoutputs/Season2及びoutputs/Season2/part6・outpus/Season2/part6/appendixを参照。
+~~詳細は後述、もしくはoutputs/Season2及びoutputs/Season2/part6・outpus/Season2/part6/appendixを参照。~~
+
+#### 実験は再現されました。
+ので汚いのとパラメータ変更が手間な以外、本リポジトリに大きな問題はないものと思われます。
 
 
 ## Contents
@@ -40,11 +43,11 @@ cargo run --example lorenz96_try_e input_file_path output_variance_path output_f
 ```
 にてlorenz96_generator(後述)で生成したデータを指定することで[part6][5]のシミュレーション実行可能。
 
-[part6][5]において観測されていない次元のRMSEが4前後となっているところ、本プログラムにおいては50～100と完全に同化が失敗している。
+~~[part6][5]において観測されていない次元のRMSEが4前後となっているところ、本プログラムにおいては50～100と完全に同化が失敗している。~~
 
-※ outputs/Season2/part6/true_enkf_res_skip02_each_rmse.ssv
+~~※ outputs/Season2/part6/true_enkf_res_skip02_each_rmse.ssv~~
 
-※ outputs/Season2/part6/true_enkf_res_skip02_first_half_rmse.ssv
+~~※ outputs/Season2/part6/true_enkf_res_skip02_first_half_rmse.ssv~~
 
 ### merging_particle_filter
 [part4][3]、融合粒子フィルターの実装ライブラリ。
@@ -59,9 +62,9 @@ cargo run --example lorenz96_try input_file_path output_variance_path output_fil
 ```
 にてlorenz96_generator(後述)で生成したデータを指定することで[part6][5]のシミュレーションを実行可能。
 
-[part6][5]においてRMSEが0.6前後となっているところ、本プログラムにおいては1.0前後となっており、実行結果に乖離がある。
+~~[part6][5]においてRMSEが0.6前後となっているところ、本プログラムにおいては1.0前後となっており、実行結果に乖離がある。~~
 
-※ outputs/Season2/part6/true_mpf_res_all_rmse.ssv
+~~※ outputs/Season2/part6/true_mpf_res_all_rmse.ssv~~
 
 ### lorez96
 [part5][4]、Lorenz96の4段4次ルンゲクッタ法による実装ライブラリ。
