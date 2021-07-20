@@ -40,12 +40,12 @@ fn main() {
     let x = Array::zeros((40, 300));
     let v = Array::from_elem((40, 300), 1.0f64);
     let w = Array::from_elem((40, 300), 1.0_f64);
-    // let h = Array::eye(40);
+    let h = Array::eye(40);
 
-    let first_half = Array::ones(20);
-    let last_half = Array::zeros(20);
-    let h =
-       Array::from_diag(&concatenate(Axis(0), &[first_half.view(), last_half.view()]).unwrap());
+    // let first_half = Array::ones(20);
+    // let last_half = Array::zeros(20);
+    // let h =
+    //    Array::from_diag(&concatenate(Axis(0), &[first_half.view(), last_half.view()]).unwrap());
 
     // let mut d = Vec::with_capacity(40);
     // for i in 0..40 {
